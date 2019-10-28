@@ -54,9 +54,20 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Return the pointer.
 
 RouteModel::Node *RoutePlanner::NextNode() {
-
+    std::sort(open_list.begin(), open_list.end(), compareNodes);
+    RouteModel::Node* lowestNode = open_list.back();
+    open_list.pop_back();
+    return lowestNode;
 }
 
+bool compareNodes(RouteModel::Node* n1, RouteModel::Node* n2){
+    int sumN1 = n1->g_value + n1->h_value;
+    int sumN2 = n2->g_value + n2->h_value;
+    if(sumN1 > sumN2){
+        return true;
+    }
+    return false;
+}
 
 // TODO 6: Complete the ConstructFinalPath method to return the final path found from your A* search.
 // Tips:
