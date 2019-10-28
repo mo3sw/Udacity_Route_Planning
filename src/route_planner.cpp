@@ -79,10 +79,21 @@ bool RoutePlanner::compareNodes(RouteModel::Node* n1, RouteModel::Node* n2){
 
 std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node *current_node) {
     // Create path_found vector
-    distance = 0.0f;
+    float distance = 0.0;
     std::vector<RouteModel::Node> path_found;
-
+    std::vector<RouteModel::Node> reversedPath;
     // TODO: Implement your solution here.
+    while(current_node->parent != nullptr){
+        reversedPath.push_back(*current_node);
+        current_node = current_node->parent;
+        distance += current_node->distance(*current_node);
+    }
+    reversedPath.push_back(*current_node->parent);
+
+    while(reversedPath.size() > 0){
+        path_found.push_back(reversedPath.back());
+        reversedPath.pop_back();
+    }
 
     distance *= m_Model.MetricScale(); // Multiply the distance by the scale of the map to get meters.
     return path_found;
