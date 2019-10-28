@@ -60,7 +60,7 @@ RouteModel::Node *RoutePlanner::NextNode() {
     return lowestNode;
 }
 
-bool compareNodes(RouteModel::Node* n1, RouteModel::Node* n2){
+bool RoutePlanner::compareNodes(RouteModel::Node* n1, RouteModel::Node* n2){
     int sumN1 = n1->g_value + n1->h_value;
     int sumN2 = n2->g_value + n2->h_value;
     if(sumN1 > sumN2){
