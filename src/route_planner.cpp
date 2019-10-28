@@ -33,6 +33,7 @@ float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
 // - For each node in current_node.neighbors, add the neighbor to open_list and set the node's visited attribute to true.
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
+    // std::cerr << "AddNeighbors start";
     current_node->FindNeighbors();
     for(RouteModel::Node* node : current_node->neighbors){
         if(node->visited != true){
@@ -43,6 +44,7 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
             open_list.push_back(node);
         }
     }
+    // std::cerr << "\tAddNeighbors end" << std::endl;
 }
 
 
@@ -54,15 +56,21 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Return the pointer.
 
 RouteModel::Node *RoutePlanner::NextNode() {
+    // std::cerr << "NextNode start" << std::endl;
     std::sort(open_list.begin(), open_list.end(), compareNodes);
     RouteModel::Node* lowestNode = open_list.back();
+    for(RouteModel::Node* n : open_list){
+        float sum = n->h_value + n->g_value;
+        //std::cerr << sum << " ";
+    }
     open_list.pop_back();
+    //std::cerr << "NextNode end" << std::endl;
     return lowestNode;
 }
 
 bool RoutePlanner::compareNodes(RouteModel::Node* n1, RouteModel::Node* n2){
-    int sumN1 = n1->g_value + n1->h_value;
-    int sumN2 = n2->g_value + n2->h_value;
+    float sumN1 = n1->g_value + n1->h_value;
+    float sumN2 = n2->g_value + n2->h_value;
     if(sumN1 > sumN2){
         return true;
     }
@@ -79,7 +87,7 @@ bool RoutePlanner::compareNodes(RouteModel::Node* n1, RouteModel::Node* n2){
 
 std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node *current_node) {
     // Create path_found vector
-    float distance = 0.0;
+    distance = 0.0f;
     std::vector<RouteModel::Node> path_found;
     std::vector<RouteModel::Node> reversedPath;
     // TODO: Implement your solution here.
@@ -109,8 +117,9 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 // - Store the final path in the m_Model.path attribute before the method exits. This path will then be displayed on the map tile.
 
 void RoutePlanner::AStarSearch() {
+    std::cerr << "AStarSearch start" << std::endl;
     RouteModel::Node *current_node = nullptr;
-
+    open_list.push_back(start_node);
     // TODO: Implement your solution here.
     while(open_list.size() > 0){
         current_node = NextNode();
