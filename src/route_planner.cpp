@@ -59,10 +59,14 @@ RouteModel::Node *RoutePlanner::NextNode() {
     // std::cerr << "NextNode start" << std::endl;
     std::sort(open_list.begin(), open_list.end(), compareNodes);
     RouteModel::Node* lowestNode = open_list.back();
-    for(RouteModel::Node* n : open_list){
-        float sum = n->h_value + n->g_value;
-        //std::cerr << sum << " ";
-    }
+    lowestNode->visited = true;
+    // for(RouteModel::Node* n : open_list){
+    //     float sum = n->h_value + n->g_value;
+    //     std::cerr << sum << " ";
+    // }
+    // std::cerr << "\n";
+    // std::cerr << lowestNode->h_value + lowestNode->g_value;
+    // std::cerr << "\n";
     open_list.pop_back();
     //std::cerr << "NextNode end" << std::endl;
     return lowestNode;
@@ -93,8 +97,8 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
     // TODO: Implement your solution here.
     while(current_node->parent != nullptr){
         reversedPath.push_back(*current_node);
+        distance += current_node->distance(*current_node->parent);
         current_node = current_node->parent;
-        distance += current_node->distance(*current_node);
     }
     reversedPath.push_back(*current_node);
 
@@ -117,13 +121,15 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 // - Store the final path in the m_Model.path attribute before the method exits. This path will then be displayed on the map tile.
 
 void RoutePlanner::AStarSearch() {
-    std::cerr << "AStarSearch start" << std::endl;
+    //std::cerr << "AStarSearch start" << std::endl;
     RouteModel::Node *current_node = nullptr;
     open_list.push_back(start_node);
     // TODO: Implement your solution here.
     while(open_list.size() > 0){
         current_node = NextNode();
-        if(current_node->distance(*end_node) == 0){
+        //return;
+        //if(current_node->distance(*end_node) == 0){
+        if(current_node->x == end_node->x && current_node->y == end_node->y){
             m_Model.path = ConstructFinalPath(current_node);
             return;
         }
