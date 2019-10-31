@@ -63,12 +63,36 @@ int main(int argc, const char **argv)
 	
     std::cout << "Enter the starting x coordinate: ";
     std::cin >> start_x;
+	if(start_x < 0 || start_x > 100){
+      while(start_x < 0 || start_x > 100){
+        std::cout << "Invalid Input! Please enter a number between 0 and 100: ";
+        std::cin >> start_x;
+      }
+    }
   	std::cout << "Enter the starting y coordinate: ";
     std::cin >> start_y;
+	if(start_y < 0 || start_y > 100){
+      while(start_y < 0 || start_y > 100){
+        std::cout << "Invalid Input! Please enter a number between 0 and 100: ";
+        std::cin >> start_y;
+      }
+    }
     std::cout << "Enter the ending x coordinate: ";
     std::cin >> end_x;
+	if(end_x < 0 || end_x > 100){
+      while(end_x < 0 || end_x > 100){
+        std::cout << "Invalid Input! Please enter a number between 0 and 100: ";
+        std::cin >> end_x;
+      }
+    }
     std::cout << "Enter the ending y coordinate: ";
     std::cin >> end_y;
+	if(end_y < 0 || end_y > 100){
+      while(end_y < 0 || end_y > 100){
+        std::cout << "Invalid Input! Please enter a number between 0 and 100: ";
+        std::cin >> end_y;
+      }
+    }
 
     // Build Model.
     RouteModel model{osm_data};
